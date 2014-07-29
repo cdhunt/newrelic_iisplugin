@@ -1,0 +1,36 @@
+﻿{
+  "agents": [
+	{ 
+		"counterlist": 
+			[
+				"\\Memory\\Pages/sec",
+				"\\Memory\\Available Bytes",
+				"\\Memory\\Committed Bytes",
+				"\\Memory\\Pool Nonpaged Bytes",
+				"\\Processor\\% Processor Time",
+				"\\Processor\\Interrupts/sec",
+				"\\Processor\\System Processor Queue Length",
+				"\\LogicalDisk(*)\\% Disk Time",
+				"\\PhysicalDisk(*)\\% Disk Time",
+				"\\LogicalDisk(*)\\Avg. Disk Queue Length",
+				"\\PhysicalDisk(*)\\Avg. Disk Queue Length",
+				"\\LogicalDisk(*)\\Avg. Disk Bytes/Transfer",
+				"\\PhysicalDisk(*)\\Avg. Disk Bytes/Transfer",
+				"\\System\\Context Switches/sec",
+				"\\Web Service(_Total)\\Bytes Total/sec",
+				"\\Web Service(_Total)\\Total Method Requests/sec",
+				"\\Web Service(_Total)\\Current Connections",
+				"\\Web Service Cache\\File Cache Hits %",
+				"\\Web Service Cache\\Kernel: URI Cache Misses",
+				"\\Web Service Cache\\Kernel: URI Cache Hits %",
+				"\\ASP.NET\\Application Restarts",
+				"\\ASP.NET\\Requests Queued",
+				"\\ASP.NET\\Worker Process Restarts",
+				"\\ASP.NET Applications(__total__)\\Errors Total",
+				"\\ASP.NET Applications(__total__)\\Requests/Sec",
+				"\\ASP.NET Applications(__total__)\\Pipeline Instance Count",
+				"\\.NET CLR Exceptions(w3wp*)\\# of Exceps Thrown" 
+			]
+		}
+	]
+}
