@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NewRelic.Platform.Sdk;
 using System.Diagnostics;
 using System.Management.Automation;
-using NewRelic.Platform.Sdk.Configuration;
 using System.Collections.ObjectModel;
 
 namespace newrelic_iisplugin
@@ -18,12 +14,10 @@ namespace newrelic_iisplugin
 
         private List<string> Counters { get; set; }
 
-        readonly PowerShell ps;
+        
 
         public IisAgent(List<Object> paths)
         {
-            ps = PowerShell.Create();
-
             List<string> newList = new List<string>();
 
             foreach (object p in paths)
@@ -49,39 +43,44 @@ namespace newrelic_iisplugin
         {
             foreach (string counter in Counters)
             {
-                ps.AddCommand("Get-Counter")
-                    .AddParameter("Counter", counter);
-
                 Collection<PSObject> results = new Collection<PSObject>();
 
-                try
+                using (PowerShell ps = PowerShell.Create().AddCommand("Get-Counter").AddParameter("Counter", counter))
                 {
-                    results = ps.Invoke();
-                }
-                catch (ArgumentNullException e)
-                {
-                    Console.WriteLine("cmdlet is null.");
-                }
-                catch (InvalidPowerShellStateException e)
-                {
-                    Console.WriteLine("The PowerShell object cannot be changed in its current state.");
-                }
-                catch (ObjectDisposedException e)
-                {
-                    Console.WriteLine("The PowerShell object is disposed.");
-                }
-                catch (Exception e)
-                {
-                    Debug.Write(e);
-                }
+                    try
+                    {
+                        results = ps.Invoke();
+                    }
+                    catch (ArgumentNullException e)
+                    {
+                        Console.WriteLine("cmdlet is null.");
+                    }
+                    catch (InvalidPowerShellStateException e)
+                    {
+                        Console.WriteLine("The PowerShell object cannot be changed in its current state.");
+                    }
+                    catch (ObjectDisposedException e)
+                    {
+                        Console.WriteLine("The PowerShell object is disposed.");
+                    }
+                    catch (RuntimeException runtimeException)
+                    {
+                        Console.WriteLine(
+                                      "Runtime exception: {0}: {1}\n{2}",
+                                      runtimeException.ErrorRecord.InvocationInfo.InvocationName,
+                                      runtimeException.Message,
+                                      runtimeException.ErrorRecord.InvocationInfo.PositionMessage);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Write(e);
+                    }
 
-                if (results.Count > 0)
-                {
                     foreach (PSObject result in results)
                     {
-                        dynamic samples = result.BaseObject;
+                        dynamic samples = result.Members["CounterSamples"].Value;
 
-                        foreach (dynamic sample in samples.CounterSamples)
+                        foreach (dynamic sample in samples)
                         {
                             ReportMetric((string)sample.Path, "undefined", (float)sample.CookedValue);
                         }

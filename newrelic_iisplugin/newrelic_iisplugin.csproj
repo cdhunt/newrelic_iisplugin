@@ -57,6 +57,7 @@
     <None Include="config\newrelic.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="config\newrelic.template.json" />
     <None Include="config\plugin.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
