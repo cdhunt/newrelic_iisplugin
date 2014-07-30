@@ -1,36 +1,38 @@
 ﻿{
   "agents": [
 	{ 
+		"name": "DUL-CHUNT",
 		"counterlist": 
 			[
-				"\\Memory\\Pages/sec",
-				"\\Memory\\Available Bytes",
-				"\\Memory\\Committed Bytes",
-				"\\Memory\\Pool Nonpaged Bytes",
-				"\\Processor\\% Processor Time",
-				"\\Processor\\Interrupts/sec",
-				"\\Processor\\System Processor Queue Length",
-				"\\LogicalDisk(*)\\% Disk Time",
-				"\\PhysicalDisk(*)\\% Disk Time",
-				"\\LogicalDisk(*)\\Avg. Disk Queue Length",
-				"\\PhysicalDisk(*)\\Avg. Disk Queue Length",
-				"\\LogicalDisk(*)\\Avg. Disk Bytes/Transfer",
-				"\\PhysicalDisk(*)\\Avg. Disk Bytes/Transfer",
-				"\\System\\Context Switches/sec",
-				"\\Web Service(_Total)\\Bytes Total/sec",
-				"\\Web Service(_Total)\\Total Method Requests/sec",
-				"\\Web Service(_Total)\\Current Connections",
-				"\\Web Service Cache\\File Cache Hits %",
-				"\\Web Service Cache\\Kernel: URI Cache Misses",
-				"\\Web Service Cache\\Kernel: URI Cache Hits %",
-				"\\ASP.NET\\Application Restarts",
-				"\\ASP.NET\\Requests Queued",
-				"\\ASP.NET\\Worker Process Restarts",
-				"\\ASP.NET Applications(__total__)\\Errors Total",
-				"\\ASP.NET Applications(__total__)\\Requests/Sec",
-				"\\ASP.NET Applications(__total__)\\Pipeline Instance Count",
-				"\\.NET CLR Exceptions(w3wp*)\\# of Exceps Thrown" 
+				{"path":"\\Memory\\Pages/sec", "unit": "Pages/sec"},
+				{"path":"\\Memory\\Available Bytes", "unit": "Pages/sec"},
+				{"path":"\\Memory\\Committed Bytes", "unit": "Pages/sec"},
+				{"path":"\\Memory\\Pool Nonpaged Bytes", "unit": "Pages/sec"},
+				{"path":"\\Processor\\% Processor Time", "unit": "Pages/sec"},
+				{"path":"\\Processor\\Interrupts/sec", "unit": "Pages/sec"},
+				{"path":"\\Processor\\System Processor Queue Length", "unit": "Pages/sec"},
+				{"path":"\\LogicalDisk(*)\\% Disk Time", "unit": "Pages/sec"},
+				{"path":"\\PhysicalDisk(*)\\% Disk Time", "unit": "Pages/sec"},
+				{"path":"\\LogicalDisk(*)\\Avg. Disk Queue Length", "unit": "Pages/sec"},
+				{"path":"\\PhysicalDisk(*)\\Avg. Disk Queue Length", "unit": "Pages/sec"},
+				{"path":"\\LogicalDisk(*)\\Avg. Disk Bytes/Transfer", "unit": "Pages/sec"},
+				{"path":"\\PhysicalDisk(*)\\Avg. Disk Bytes/Transfer", "unit": "Pages/sec"},
+				{"path":"\\System\\Context Switches/sec", "unit": "Pages/sec"},
+				{"path":"\\Web Service(_Total)\\Bytes Total/sec", "unit": "Pages/sec"},
+				{"path":"\\Web Service(_Total)\\Total Method Requests/sec", "unit": "Pages/sec"},
+				{"path":"\\Web Service(_Total)\\Current Connections", "unit": "Pages/sec"},
+				{"path":"\\Web Service Cache\\File Cache Hits %", "unit": "Pages/sec"},
+				{"path":"\\Web Service Cache\\Kernel: URI Cache Misses", "unit": "Pages/sec"},
+				{"path":"\\Web Service Cache\\Kernel: URI Cache Hits %", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET\\Application Restarts", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET\\Requests Queued", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET\\Worker Process Restarts", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET Applications(__total__)\\Errors Total", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET Applications(__total__)\\Requests/Sec", "unit": "Pages/sec"},
+				{"path":"\\ASP.NET Applications(__total__)\\Pipeline Instance Count", "unit": "Pages/sec"},
+				{"path":"\\.NET CLR Exceptions(w3wp*)\\# of Exceps Thrown", "unit": "Pages/sec"}
 			]
 		}
-	]
+	],
+	
 }

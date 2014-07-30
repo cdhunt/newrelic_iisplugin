@@ -14,8 +14,6 @@ namespace newrelic_iisplugin
 
         private List<string> Counters { get; set; }
 
-        
-
         public IisAgent(List<Object> paths)
         {
             List<string> newList = new List<string>();
