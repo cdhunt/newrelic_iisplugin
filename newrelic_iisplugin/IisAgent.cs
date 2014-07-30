@@ -10,33 +10,19 @@ namespace newrelic_iisplugin
     class IisAgent : Agent
     {
         public override string Guid { get { return "com.automatedops.iisplugin"; } }
-        public override string Version { get { return "0.0.2"; } }
+        public override string Version { get { return "0.0.4"; } }
 
+        private string Name { get; set; }
         private List<Object> Counters { get; set; }
 
-        public IisAgent(List<Object> paths)
+        public IisAgent(string name, List<Object> paths)
         {
-            Counters = paths;
-
-            //List<Dictionary<string, string>> newList = new List<Dictionary<string, string>>();
-
-            //foreach (object p in paths)
-            //{
-            //    try 
-            //    {
-            //        newList.Add(p.ToString());
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Debug.Write(e);
-            //    }
-            //}
-
-            //Counters = newList;            
+            Name = name;
+            Counters = paths;         
         }
 
         public override string GetAgentName() {
-            return System.Environment.MachineName;
+            return Name;
         }
 
         public override void PollCycle()
@@ -45,7 +31,7 @@ namespace newrelic_iisplugin
             {
                 Collection<PSObject> results = new Collection<PSObject>();
 
-                using (PowerShell ps = PowerShell.Create().AddCommand("Get-Counter").AddParameter("Counter", counter["path"].ToString()))
+                using (PowerShell ps = PowerShell.Create().AddCommand("Get-Counter").AddParameter("Counter", string.Format("\\\\{0}{1}", Name, counter["path"])))
                 {
                     try
                     {
@@ -53,27 +39,27 @@ namespace newrelic_iisplugin
                     }
                     catch (ArgumentNullException e)
                     {
-                        Console.WriteLine("cmdlet is null.");
+                        Console.WriteLine("cmdlet is null.", e.Message);
                     }
                     catch (InvalidPowerShellStateException e)
                     {
-                        Console.WriteLine("The PowerShell object cannot be changed in its current state.");
+                        Console.WriteLine("The PowerShell object cannot be changed in its current state.", e.Message);
                     }
                     catch (ObjectDisposedException e)
                     {
-                        Console.WriteLine("The PowerShell object is disposed.");
+                        Console.WriteLine("The PowerShell object is disposed.", e.Message);
                     }
-                    catch (RuntimeException runtimeException)
+                    catch (RuntimeException e)
                     {
                         Console.WriteLine(
                                       "Runtime exception: {0}: {1}\n{2}",
-                                      runtimeException.ErrorRecord.InvocationInfo.InvocationName,
-                                      runtimeException.Message,
-                                      runtimeException.ErrorRecord.InvocationInfo.PositionMessage);
+                                      e.ErrorRecord.InvocationInfo.InvocationName,
+                                      e.Message,
+                                      e.ErrorRecord.InvocationInfo.PositionMessage);
                     }
                     catch (Exception e)
                     {
-                        Debug.Write(e);
+                        Console.WriteLine("Unknown exception", e.Message);
                     }
 
                     foreach (PSObject result in results)
@@ -94,6 +80,7 @@ namespace newrelic_iisplugin
     {
         public override Agent CreateAgentWithConfiguration(IDictionary<string, object> properties)
         {
+            string name = (string)properties["name"];
             List<Object> counterlist = (List<Object>)properties["counterlist"];
 
             if (counterlist.Count == 0)
@@ -101,7 +88,7 @@ namespace newrelic_iisplugin
                 throw new Exception("'counterlist' is empty. Do you have a 'config/plugin.json' file?");
             }
 
-            return new IisAgent(counterlist);
+            return new IisAgent(name, counterlist);
         }
     }
 }
