@@ -9,28 +9,30 @@ namespace newrelic_iisplugin
 {
     class IisAgent : Agent
     {
-        public override string Guid { get { return "iisplugin"; } }
-        public override string Version { get { return "0.0.1"; } }
+        public override string Guid { get { return "com.automatedops.iisplugin"; } }
+        public override string Version { get { return "0.0.2"; } }
 
-        private List<string> Counters { get; set; }
+        private List<Object> Counters { get; set; }
 
         public IisAgent(List<Object> paths)
         {
-            List<string> newList = new List<string>();
+            Counters = paths;
 
-            foreach (object p in paths)
-            {
-                try 
-                {
-                    newList.Add(p.ToString());
-                }
-                catch (Exception e)
-                {
-                    Debug.Write(e);
-                }
-            }
+            //List<Dictionary<string, string>> newList = new List<Dictionary<string, string>>();
 
-            Counters = newList;            
+            //foreach (object p in paths)
+            //{
+            //    try 
+            //    {
+            //        newList.Add(p.ToString());
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Debug.Write(e);
+            //    }
+            //}
+
+            //Counters = newList;            
         }
 
         public override string GetAgentName() {
@@ -39,11 +41,11 @@ namespace newrelic_iisplugin
 
         public override void PollCycle()
         {
-            foreach (string counter in Counters)
+            foreach (Dictionary<string,Object> counter in Counters)
             {
                 Collection<PSObject> results = new Collection<PSObject>();
 
-                using (PowerShell ps = PowerShell.Create().AddCommand("Get-Counter").AddParameter("Counter", counter))
+                using (PowerShell ps = PowerShell.Create().AddCommand("Get-Counter").AddParameter("Counter", counter["path"].ToString()))
                 {
                     try
                     {
@@ -80,7 +82,7 @@ namespace newrelic_iisplugin
 
                         foreach (dynamic sample in samples)
                         {
-                            ReportMetric((string)sample.Path, "undefined", (float)sample.CookedValue);
+                            ReportMetric((string)sample.Path, counter["unit"].ToString(), (float)sample.CookedValue);
                         }
                     }
                 }
@@ -94,9 +96,9 @@ namespace newrelic_iisplugin
         {
             List<Object> counterlist = (List<Object>)properties["counterlist"];
 
-            if (counterlist == null)
+            if (counterlist.Count == 0)
             {
-                throw new Exception("'counterlist' is null. Do you have a 'config/plugin.json' file?");
+                throw new Exception("'counterlist' is empty. Do you have a 'config/plugin.json' file?");
             }
 
             return new IisAgent(counterlist);
