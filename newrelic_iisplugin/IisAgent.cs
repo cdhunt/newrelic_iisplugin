@@ -10,7 +10,7 @@ namespace newrelic_iisplugin
     class IisAgent : Agent
     {
         public override string Guid { get { return "com.automatedops.iisplugin"; } }
-        public override string Version { get { return "0.0.4"; } }
+        public override string Version { get { return "0.0.5"; } }
 
         private string Name { get; set; }
         private List<Object> Counters { get; set; }
@@ -68,7 +68,11 @@ namespace newrelic_iisplugin
 
                         foreach (dynamic sample in samples)
                         {
-                            ReportMetric((string)sample.Path, counter["unit"].ToString(), (float)sample.CookedValue);
+                            string[] pathParts = sample.Path.Split('\\');
+
+                            string genericPath = string.Concat(pathParts[3], "\\", pathParts[4]);
+
+                            ReportMetric(genericPath, counter["unit"].ToString(), (float)sample.CookedValue);
                         }
                     }
                 }
